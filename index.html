@@ -1,0 +1,40 @@
+<html>
+<title>Accessing REST API on localhost</title>
+<head>
+<script>
+function httpGet( url ) 
+{
+  var xhr = new XMLHttpRequest();
+  var timeoutTime = 1000;
+  
+  xhr.ontimeout = function () {
+    console.error("The request for " + url + " timed out.");
+  };
+  
+  xhr.onload = function() {
+    if (xhr.readyState === 4) { 
+      if (xhr.status === 200) {
+        console.log(xhr.responseText);
+      } else {
+        console.error(xhr.statusText);
+      }
+    }
+  };
+
+  xhr.open("GET", url, true);
+  xhr.timeout = timeoutTime;
+  xhr.send(null);
+}
+
+</script>
+ </head>
+<body>
+
+<button type="button" onclick="httpGet('http://localhost:5000')">Click to fetch latest value of A0</button>
+
+<p id="demo">A Paragraph</p>
+
+
+</body>
+
+</html>
