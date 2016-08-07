@@ -36,6 +36,7 @@ function httpReq( method, url, callback, data )
   };
 
   xhr.open( method, url, true);
+  xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhr.timeout = timeoutTime;
   xhr.send(data);
 }
