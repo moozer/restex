@@ -2,7 +2,9 @@
 <title>Accessing REST API on localhost</title>
 <head>
 <script>
-function httpGet( url ) 
+var baseUrl = 'http://localhost:5000/'
+
+function httpGet( url, callback ) 
 {
   var xhr = new XMLHttpRequest();
   var timeoutTime = 1000;
@@ -14,7 +16,7 @@ function httpGet( url )
   xhr.onload = function() {
     if (xhr.readyState === 4) { 
       if (xhr.status === 200) {
-        console.log(xhr.responseText);
+        callback( xhr.responseText );
       } else {
         console.error(xhr.statusText);
       }
@@ -26,13 +28,23 @@ function httpGet( url )
   xhr.send(null);
 }
 
+function updateA0Value( text )
+{
+    document.getElementById('A0value').innerHTML = text;
+}
+
 </script>
- </head>
+</head>
+
 <body>
 
-<button type="button" onclick="httpGet('http://localhost:5000')">Click to fetch latest value of A0</button>
+<button type="button" onclick="httpGet( baseUrl + 'gpio/A0', updateA0Value )">Click to fetch latest value of A0</button>
 
-<p id="demo">A Paragraph</p>
+Current values from device: <br />
+
+<ul>
+    <li>A0: <label id="A0value">- X -</label></li>
+</ul>
 
 
 </body>
