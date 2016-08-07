@@ -11,7 +11,8 @@ function httpGet( url, callback )
 
 function httpPut( url, data )
 {
-  httpReq( "PUT", url, null, data )
+  json_data = JSON.stringify( data )
+  httpReq( "PUT", url, null, json_data )
 }
 
 function httpReq( method, url, callback, data ) 
@@ -26,15 +27,11 @@ function httpReq( method, url, callback, data )
   xhr.onload = function() {
     if (xhr.readyState === 4) { 
       if (xhr.status === 200) {
-        if( callback == null ) {
-          updateLastMessage(  "The request for " + url + " succeeded." ) 
-        } else {
+        if( callback != null ) {
           callback( xhr.responseText );
-          updateLastMessage( xhr.responseText );
         }
-      } else {
-        updateLastMessage( xhr.status + " " + xhr.statusText);
       }
+      updateLastMessage( xhr.status + " " + xhr.statusText + "<br />" +  xhr.responseText );
     }
   };
 
@@ -67,7 +64,7 @@ Current values from device: <br />
 <ul>
     <li>A0: <label id="A0current">- X -</label> - 
         set: <input name='A0set' id="A0set"></input>
-             <button type="button" onclick="httpPut( baseUrl + 'gpio/A0', document.getElementById('A0set').value )">set</button>
+             <button type="button" onclick="httpPut( baseUrl + 'gpio/A0', { 'data': document.getElementById('A0set').value } )">set</button>
     </li>
 </ul>
 
