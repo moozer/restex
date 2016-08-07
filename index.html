@@ -4,33 +4,43 @@
 <script>
 var baseUrl = 'http://localhost:5000/'
 
-function httpGet( url, callback ) 
+function httpGet( url, callback )
+{
+  httpReq( "GET", url, callback, null )
+}
+
+function httpReq( method, url, callback, data ) 
 {
   var xhr = new XMLHttpRequest();
   var timeoutTime = 1000;
   
   xhr.ontimeout = function () {
-    console.error("The request for " + url + " timed out.");
+    console.error("The request for " + url + " timed out.");    
   };
   
   xhr.onload = function() {
     if (xhr.readyState === 4) { 
       if (xhr.status === 200) {
-        callback( xhr.responseText );
+        if( callback == null ) {
+          console.log(  "The request for " + url + " succeeded." ) 
+        } else {
+          callback( xhr.responseText );
+        }
       } else {
         console.error(xhr.statusText);
       }
     }
   };
 
-  xhr.open("GET", url, true);
+  xhr.open( method, url, true);
   xhr.timeout = timeoutTime;
-  xhr.send(null);
+  xhr.send(data);
 }
 
 function updateA0Value( text )
 {
-    document.getElementById('A0value').innerHTML = text;
+    document.getElementById('A0current').innerHTML = text;
+    document.getElementById('A0set').value = text;
 }
 
 </script>
@@ -43,7 +53,10 @@ function updateA0Value( text )
 Current values from device: <br />
 
 <ul>
-    <li>A0: <label id="A0value">- X -</label></li>
+    <li>A0: <label id="A0current">- X -</label> - 
+        set: <input name='A0set' id="A0set"></input>
+             <button type="button" onclick="httpPut( baseUrl + 'gpio/A0' )">set</button>
+    </li>
 </ul>
 
 
