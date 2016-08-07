@@ -9,6 +9,11 @@ function httpGet( url, callback )
   httpReq( "GET", url, callback, null )
 }
 
+function httpPut( url, data )
+{
+  httpReq( "PUT", url, null, data )
+}
+
 function httpReq( method, url, callback, data ) 
 {
   var xhr = new XMLHttpRequest();
@@ -22,12 +27,13 @@ function httpReq( method, url, callback, data )
     if (xhr.readyState === 4) { 
       if (xhr.status === 200) {
         if( callback == null ) {
-          console.log(  "The request for " + url + " succeeded." ) 
+          updateLastMessage(  "The request for " + url + " succeeded." ) 
         } else {
           callback( xhr.responseText );
+          updateLastMessage( xhr.responseText );
         }
       } else {
-        console.error(xhr.statusText);
+        updateLastMessage( xhr.status + " " + xhr.statusText);
       }
     }
   };
@@ -43,6 +49,12 @@ function updateA0Value( text )
     document.getElementById('A0set').value = text;
 }
 
+function updateLastMessage( text )
+{
+    document.getElementById('lastMessage').innerHTML = text;
+}
+
+
 </script>
 </head>
 
@@ -55,10 +67,12 @@ Current values from device: <br />
 <ul>
     <li>A0: <label id="A0current">- X -</label> - 
         set: <input name='A0set' id="A0set"></input>
-             <button type="button" onclick="httpPut( baseUrl + 'gpio/A0' )">set</button>
+             <button type="button" onclick="httpPut( baseUrl + 'gpio/A0', document.getElementById('A0set').value )">set</button>
     </li>
 </ul>
 
+<br />
+last message: <label id="lastMessage">- X -</label>
 
 </body>
 
