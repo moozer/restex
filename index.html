@@ -65,7 +65,7 @@ Current values from device: <br />
 <ul>
     <li>A0: <label id="A0current">- X -</label> - 
         set: <input name='A0set' id="A0set"></input>
-             <button type="button" onclick="httpPut( baseUrl + 'gpio/A0', { 'data': document.getElementById('A0set').value } )">set</button>
+             <button type="button" onclick="httpPut( baseUrl + 'gpio/A0', { 'value': document.getElementById('A0set').value } )">set</button>
     </li>
 </ul>
 
