@@ -33,7 +33,7 @@ class url_gpio_name( Resource ):
     def put( self, gpio_name ):
         try:
             gpios[ gpio_name ]['value'] = request.json['value']
-            return "", 204
+            return gpios[ gpio_name ]['value'], 200
         except KeyError, ex:
             return { "message": "key error: Either '%s' is not a GPIO name or data is undefined (received: '%s')"%(gpio_name, str(request.form)) }, 400
 
